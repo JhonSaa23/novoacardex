@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../contexts/authContext";
 import api from "../services/api";
-import Preloader from '../components/Preloader';
+import Preloader from "../components/Preloader";
 import {
   Container,
   TextField,
@@ -158,13 +158,46 @@ function Movimientos() {
     return (
       (!fechaInicio || fechaMovimiento >= fechaInicio) &&
       (!fechaFin || fechaMovimiento <= fechaFin) &&
-      (movimiento.codigo_barra?.toLowerCase().includes(searchCodigo.toLowerCase()) || "") &&
-      (movimiento.producto_nombre?.toLowerCase().includes(searchNombre.toLowerCase()) || "") &&
-      (movimiento.usuario?.toLowerCase().includes(searchUsuario.toLowerCase()) || "") &&
+      (movimiento.codigo_barra
+        ?.toLowerCase()
+        .includes(searchCodigo.toLowerCase()) ||
+        "") &&
+      (movimiento.producto_nombre
+        ?.toLowerCase()
+        .includes(searchNombre.toLowerCase()) ||
+        "") &&
+      (movimiento.usuario
+        ?.toLowerCase()
+        .includes(searchUsuario.toLowerCase()) ||
+        "") &&
       (movimiento.cantidad?.toString().includes(searchCantidad) || "") &&
-      (movimiento.tipo?.toLowerCase().includes(searchMovimiento.toLowerCase()) || "")
+      (movimiento.tipo
+        ?.toLowerCase()
+        .includes(searchMovimiento.toLowerCase()) ||
+        "")
     );
   });
+  
+  const getMovimientoStyle = (tipo) => {
+    let backgroundColor = tipo === "entrada" ? "#5af968" : "#ffb400"; // Verde para entrada, naranja para salida
+    let textColor = tipo === "entrada" ? "#106400" : "#745c00";
+  
+    return {
+      backgroundColor,
+      color: textColor,
+      fontWeight: "bold",
+      fontSize: "14px",
+      marginTop: "15px",
+      marginLeft: "20px",
+      letterSpacing: "1px",
+      padding: "2px 5px",
+      borderRadius: "5px",
+      display: "inline-block",
+      textAlign: "center",
+      width: "80px",
+    };
+  };
+  
 
   if (loading) {
     return <Preloader />;
@@ -214,7 +247,11 @@ function Movimientos() {
             onClick={handleMovimiento}
             disabled={buttonLoading}
           >
-            {buttonLoading ? <CircularProgress size={24} /> : 'Registrar Movimiento'}
+            {buttonLoading ? (
+              <CircularProgress size={24} />
+            ) : (
+              "Registrar Movimiento"
+            )}
           </Button>
         </Grid>
         <Grid item xs={3}>
@@ -241,7 +278,7 @@ function Movimientos() {
         <Table stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell  sx={{ width: "23%" }}>
+              <TableCell sx={{ width: "22.1%" }}>
                 <TextField
                   label="Fecha Inicio"
                   type="date"
@@ -257,23 +294,7 @@ function Movimientos() {
                   InputLabelProps={{ shrink: true }}
                 />
               </TableCell>
-              <TableCell sx={{ width: "12%" }}>
-                <TextField
-                  label="Cod. Barra"
-                  value={searchCodigo}
-                  onChange={(e) => setSearchCodigo(e.target.value)}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton>
-                          <Search />
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </TableCell>
-              <TableCell  sx={{ width: "12%" }}>
+              <TableCell sx={{ width: "20%" }}>
                 <Autocomplete
                   freeSolo
                   options={productos.map((producto) => producto.nombre)}
@@ -298,19 +319,36 @@ function Movimientos() {
                   )}
                 />
               </TableCell>
-              <TableCell>
+              <TableCell sx={{ width: "12%" }}>
+                <TextField
+                  label="Codigo"
+                  value={searchCodigo}
+                  onChange={(e) => setSearchCodigo(e.target.value)}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton>
+                          <Search />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </TableCell>
+              <TableCell sx={{ width: "8%" }}>
                 <Select
                   value={searchMovimiento}
                   onChange={(e) => setSearchMovimiento(e.target.value)}
                   displayEmpty
                   fullWidth
+                  sx={{ textAlign: "center" }}
                 >
                   <MenuItem value="">Todos</MenuItem>
                   <MenuItem value="entrada">Entrada</MenuItem>
                   <MenuItem value="salida">Salida</MenuItem>
                 </Select>
-              </TableCell>
-              <TableCell>
+              </TableCell >
+              <TableCell sx={{ textAlign: "center", width: "8%" }}>
                 <IconButton onClick={handleSortCantidad}>
                   {sortOrder === "asc" ? <ArrowUpward /> : <ArrowDownward />}
                 </IconButton>
@@ -342,17 +380,18 @@ function Movimientos() {
               </TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody >
             {filteredMovimientos.map((movimiento) => (
               <TableRow key={movimiento.id}>
                 <TableCell>
                   {new Date(movimiento.fecha).toLocaleString()}
                 </TableCell>
-                <TableCell>{movimiento.codigo_barra}</TableCell>
                 <TableCell>{movimiento.producto_nombre}</TableCell>
-                <TableCell>{movimiento.tipo}</TableCell>
-                <TableCell>{movimiento.cantidad}</TableCell>
+                <TableCell sx={{ textAlign: "center" }}>{movimiento.codigo_barra}</TableCell>
+                <TableCell style={getMovimientoStyle(movimiento.tipo)} sx={{ textAlign: "center" }}>{movimiento.tipo}</TableCell>
+                <TableCell sx={{ textAlign: "center" }}>{movimiento.cantidad}</TableCell>
                 <TableCell>{movimiento.usuario}</TableCell>
+                
               </TableRow>
             ))}
           </TableBody>
