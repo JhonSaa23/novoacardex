@@ -18,6 +18,8 @@ const App = () => {
       <CssBaseline />
       <Routes>
         {/* Ruta pública */}
+
+        <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
 
         {/* Rutas protegidas */}
