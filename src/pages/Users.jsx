@@ -458,8 +458,10 @@ function Users() {
             fullWidth
             margin="normal"
           >
-            <MenuItem value="usuario">Usuario</MenuItem>
-            <MenuItem value="admin">Admin</MenuItem>
+            <MenuItem value="usuario">Administrador </MenuItem>
+            <MenuItem value="admin">Jefe de Almacén</MenuItem>
+            <MenuItem value="usuario">Auxiliar de Almacén </MenuItem>
+            <MenuItem value="admin">Encargado de Compras</MenuItem>
           </Select>
         </DialogContent>
         <DialogActions>
