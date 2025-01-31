@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import api from '../services/api';
+import { useEffect, useState } from "react";
+import api from "../services/api";
 import {
   Container,
   Typography,
@@ -24,47 +24,56 @@ import {
   Snackbar,
   Alert,
   Grid,
-} from '@mui/material';
-import { Edit, Delete } from '@mui/icons-material';
-import Preloader from '../components/Preloader'; // Importar el Preloader
+} from "@mui/material";
+import { Edit, Delete } from "@mui/icons-material";
+import Preloader from "../components/Preloader"; // Importar el Preloader
 
 function Users() {
   const [users, setUsers] = useState([]);
-  const [newUser, setNewUser] = useState({ username: '', password: '', rol: '' });
-  const [search, setSearch] = useState('');
+  const [newUser, setNewUser] = useState({
+    username: "",
+    password: "",
+    rol: "",
+  });
+  const [search, setSearch] = useState("");
   const [editUser, setEditUser] = useState(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [loading, setLoading] = useState(true); // Agregado: estado de loading
 
   const [proveedores, setProveedores] = useState([]);
-  const [newProveedor, setNewProveedor] = useState({ nombre: '', contacto: '', telefono: '' });
-  const [searchProveedor, setSearchProveedor] = useState('');
+  const [newProveedor, setNewProveedor] = useState({
+    nombre: "",
+    contacto: "",
+    telefono: "",
+  });
+  const [searchProveedor, setSearchProveedor] = useState("");
   const [editProveedor, setEditProveedor] = useState(null);
   const [openEditProveedorDialog, setOpenEditProveedorDialog] = useState(false);
-  const [openDeleteProveedorDialog, setOpenDeleteProveedorDialog] = useState(false);
+  const [openDeleteProveedorDialog, setOpenDeleteProveedorDialog] =
+    useState(false);
   const [proveedorToDelete, setProveedorToDelete] = useState(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await api.get('/users');
+        const response = await api.get("/users");
         setUsers(response.data);
       } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error("Error fetching users:", error);
       }
     };
 
     const fetchProveedores = async () => {
       try {
-        const response = await api.get('/proveedores');
+        const response = await api.get("/proveedores");
         setProveedores(response.data);
       } catch (error) {
-        console.error('Error fetching proveedores:', error);
+        console.error("Error fetching proveedores:", error);
       }
     };
 
@@ -87,16 +96,16 @@ function Users() {
 
   const handleAddUser = async () => {
     try {
-      const response = await api.post('/register', newUser);
+      const response = await api.post("/register", newUser);
       setUsers([...users, response.data]);
-      setNewUser({ username: '', password: '', rol: '' });
-      setSnackbarMessage('Usuario agregado correctamente');
-      setSnackbarSeverity('success');
+      setNewUser({ username: "", password: "", rol: "" });
+      setSnackbarMessage("Usuario agregado correctamente");
+      setSnackbarSeverity("success");
       setOpenSnackbar(true);
     } catch (error) {
-      console.error('Error adding user:', error);
-      setSnackbarMessage('Error al agregar usuario');
-      setSnackbarSeverity('error');
+      console.error("Error adding user:", error);
+      setSnackbarMessage("Error al agregar usuario");
+      setSnackbarSeverity("error");
       setOpenSnackbar(true);
     }
   };
@@ -118,15 +127,17 @@ function Users() {
   const handleUpdateUser = async () => {
     try {
       await api.put(`/users/${editUser.id}`, editUser);
-      setUsers(users.map(user => (user.id === editUser.id ? editUser : user)));
+      setUsers(
+        users.map((user) => (user.id === editUser.id ? editUser : user))
+      );
       setOpenEditDialog(false);
-      setSnackbarMessage('Usuario actualizado correctamente');
-      setSnackbarSeverity('success');
+      setSnackbarMessage("Usuario actualizado correctamente");
+      setSnackbarSeverity("success");
       setOpenSnackbar(true);
     } catch (error) {
-      console.error('Error updating user:', error);
-      setSnackbarMessage('Error al actualizar usuario');
-      setSnackbarSeverity('error');
+      console.error("Error updating user:", error);
+      setSnackbarMessage("Error al actualizar usuario");
+      setSnackbarSeverity("error");
       setOpenSnackbar(true);
     }
   };
@@ -134,15 +145,15 @@ function Users() {
   const handleDeleteUser = async () => {
     try {
       await api.delete(`/users/${userToDelete.id}`);
-      setUsers(users.filter(user => user.id !== userToDelete.id));
+      setUsers(users.filter((user) => user.id !== userToDelete.id));
       setOpenDeleteDialog(false);
-      setSnackbarMessage('Usuario eliminado correctamente');
-      setSnackbarSeverity('success');
+      setSnackbarMessage("Usuario eliminado correctamente");
+      setSnackbarSeverity("success");
       setOpenSnackbar(true);
     } catch (error) {
-      console.error('Error deleting user:', error);
-      setSnackbarMessage('Error al eliminar usuario');
-      setSnackbarSeverity('error');
+      console.error("Error deleting user:", error);
+      setSnackbarMessage("Error al eliminar usuario");
+      setSnackbarSeverity("error");
       setOpenSnackbar(true);
     }
   };
@@ -156,7 +167,7 @@ function Users() {
     setOpenSnackbar(false);
   };
 
-  const filteredUsers = users.filter(user =>
+  const filteredUsers = users.filter((user) =>
     user.username.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -167,16 +178,16 @@ function Users() {
 
   const handleAddProveedor = async () => {
     try {
-      const response = await api.post('/proveedores', newProveedor);
+      const response = await api.post("/proveedores", newProveedor);
       setProveedores([...proveedores, response.data]);
-      setNewProveedor({ nombre: '', contacto: '', telefono: '' });
-      setSnackbarMessage('Proveedor agregado correctamente');
-      setSnackbarSeverity('success');
+      setNewProveedor({ nombre: "", contacto: "", telefono: "" });
+      setSnackbarMessage("Proveedor agregado correctamente");
+      setSnackbarSeverity("success");
       setOpenSnackbar(true);
     } catch (error) {
-      console.error('Error adding proveedor:', error);
-      setSnackbarMessage('Error al agregar proveedor');
-      setSnackbarSeverity('error');
+      console.error("Error adding proveedor:", error);
+      setSnackbarMessage("Error al agregar proveedor");
+      setSnackbarSeverity("error");
       setOpenSnackbar(true);
     }
   };
@@ -198,15 +209,19 @@ function Users() {
   const handleUpdateProveedor = async () => {
     try {
       await api.put(`/proveedores/${editProveedor.id}`, editProveedor);
-      setProveedores(proveedores.map(proveedor => (proveedor.id === editProveedor.id ? editProveedor : proveedor)));
+      setProveedores(
+        proveedores.map((proveedor) =>
+          proveedor.id === editProveedor.id ? editProveedor : proveedor
+        )
+      );
       setOpenEditProveedorDialog(false);
-      setSnackbarMessage('Proveedor actualizado correctamente');
-      setSnackbarSeverity('success');
+      setSnackbarMessage("Proveedor actualizado correctamente");
+      setSnackbarSeverity("success");
       setOpenSnackbar(true);
     } catch (error) {
-      console.error('Error updating proveedor:', error);
-      setSnackbarMessage('Error al actualizar proveedor');
-      setSnackbarSeverity('error');
+      console.error("Error updating proveedor:", error);
+      setSnackbarMessage("Error al actualizar proveedor");
+      setSnackbarSeverity("error");
       setOpenSnackbar(true);
     }
   };
@@ -214,15 +229,17 @@ function Users() {
   const handleDeleteProveedor = async () => {
     try {
       await api.delete(`/proveedores/${proveedorToDelete.id}`);
-      setProveedores(proveedores.filter(proveedor => proveedor.id !== proveedorToDelete.id));
+      setProveedores(
+        proveedores.filter((proveedor) => proveedor.id !== proveedorToDelete.id)
+      );
       setOpenDeleteProveedorDialog(false);
-      setSnackbarMessage('Proveedor eliminado correctamente');
-      setSnackbarSeverity('success');
+      setSnackbarMessage("Proveedor eliminado correctamente");
+      setSnackbarSeverity("success");
       setOpenSnackbar(true);
     } catch (error) {
-      console.error('Error deleting proveedor:', error);
-      setSnackbarMessage('Error al eliminar proveedor');
-      setSnackbarSeverity('error');
+      console.error("Error deleting proveedor:", error);
+      setSnackbarMessage("Error al eliminar proveedor");
+      setSnackbarSeverity("error");
       setOpenSnackbar(true);
     }
   };
@@ -232,7 +249,7 @@ function Users() {
     setOpenDeleteProveedorDialog(true);
   };
 
-  const filteredProveedores = proveedores.filter(proveedor =>
+  const filteredProveedores = proveedores.filter((proveedor) =>
     proveedor.nombre.toLowerCase().includes(searchProveedor.toLowerCase())
   );
 
@@ -277,16 +294,24 @@ function Users() {
                   displayEmpty
                   renderValue={(selected) => {
                     if (selected.length === 0) {
-                      return <Typography color="textPrimary">Selecciona un rol</Typography>;
+                      return (
+                        <Typography color="textPrimary">
+                          Selecciona un rol
+                        </Typography>
+                      );
                     }
                     return selected;
                   }}
                 >
                   <MenuItem value="" disabled>
-                    <Typography color="textPrimary">Selecciona un rol</Typography>
+                    <Typography color="textPrimary">
+                      Selecciona un rol
+                    </Typography>
                   </MenuItem>
-                  <MenuItem value="usuario">Usuario</MenuItem>
-                  <MenuItem value="admin">Admin</MenuItem>
+                  <MenuItem value="usuario">Administrador </MenuItem>
+                  <MenuItem value="admin">Jefe de Almacén</MenuItem>
+                  <MenuItem value="usuario">Auxiliar de Almacén </MenuItem>
+                  <MenuItem value="admin">Encargado de Compras</MenuItem>
                 </Select>
               </Grid>
             </Grid>
@@ -300,16 +325,27 @@ function Users() {
                 />
               </Grid>
               <Grid item xs={3}>
-                <Button variant="contained" color="primary" onClick={handleAddUser} fullWidth>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleAddUser}
+                  fullWidth
+                >
                   Agregar + Usuarios
                 </Button>
               </Grid>
             </Grid>
           </Box>
-          <TableContainer className="custom-scrollbar" component={Paper} sx={{ maxHeight: {
-    lg: '54vh',  // Para pantallas grandes
-    xl: '69vh',  // Para pantallas extra grandes
-  },}}>
+          <TableContainer
+            className="custom-scrollbar"
+            component={Paper}
+            sx={{
+              maxHeight: {
+                lg: "54vh", // Para pantallas grandes
+                xl: "69vh", // Para pantallas extra grandes
+              },
+            }}
+          >
             <Table stickyHeader>
               <TableHead>
                 <TableRow>
@@ -337,7 +373,7 @@ function Users() {
                 ))}
               </TableBody>
             </Table>
-          </TableContainer >
+          </TableContainer>
         </Grid>
         <Grid item xs={12} md={6}>
           <Typography variant="h5" component="h3" gutterBottom>
@@ -383,16 +419,27 @@ function Users() {
                 />
               </Grid>
               <Grid item xs={3}>
-                <Button variant="contained" color="primary" onClick={handleAddProveedor} fullWidth>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleAddProveedor}
+                  fullWidth
+                >
                   Agregar Proveedor
                 </Button>
               </Grid>
             </Grid>
           </Box>
-          <TableContainer className="custom-scrollbar" component={Paper} sx={{ maxHeight: {
-    lg: '54vh',  // Para pantallas grandes
-    xl: '69vh',  // Para pantallas extra grandes
-  },}}>
+          <TableContainer
+            className="custom-scrollbar"
+            component={Paper}
+            sx={{
+              maxHeight: {
+                lg: "54vh", // Para pantallas grandes
+                xl: "69vh", // Para pantallas extra grandes
+              },
+            }}
+          >
             <Table stickyHeader>
               <TableHead>
                 <TableRow>
@@ -411,10 +458,16 @@ function Users() {
                     <TableCell>{proveedor.contacto}</TableCell>
                     <TableCell>{proveedor.telefono}</TableCell>
                     <TableCell>
-                      <IconButton onClick={() => handleEditProveedor(proveedor)}>
+                      <IconButton
+                        onClick={() => handleEditProveedor(proveedor)}
+                      >
                         <Edit />
                       </IconButton>
-                      <IconButton onClick={() => handleOpenDeleteProveedorDialog(proveedor)}>
+                      <IconButton
+                        onClick={() =>
+                          handleOpenDeleteProveedorDialog(proveedor)
+                        }
+                      >
                         <Delete />
                       </IconButton>
                     </TableCell>
@@ -436,7 +489,7 @@ function Users() {
           <TextField
             label="Nombre de Usuario"
             name="username"
-            value={editUser?.username || ''}
+            value={editUser?.username || ""}
             onChange={handleEditInputChange}
             fullWidth
             margin="normal"
@@ -445,7 +498,7 @@ function Users() {
             label="Contraseña"
             name="password"
             type="password"
-            value={editUser?.password || ''}
+            value={editUser?.password || ""}
             onChange={handleEditInputChange}
             fullWidth
             margin="normal"
@@ -453,7 +506,7 @@ function Users() {
           <Select
             label="Rol"
             name="rol"
-            value={editUser?.rol || ''}
+            value={editUser?.rol || ""}
             onChange={handleEditInputChange}
             fullWidth
             margin="normal"
@@ -475,7 +528,10 @@ function Users() {
       </Dialog>
 
       {/* Modal para confirmar eliminación de usuario */}
-      <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
+      <Dialog
+        open={openDeleteDialog}
+        onClose={() => setOpenDeleteDialog(false)}
+      >
         <DialogTitle>Eliminar Usuario</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -493,7 +549,10 @@ function Users() {
       </Dialog>
 
       {/* Modal para editar proveedor */}
-      <Dialog open={openEditProveedorDialog} onClose={() => setOpenEditProveedorDialog(false)}>
+      <Dialog
+        open={openEditProveedorDialog}
+        onClose={() => setOpenEditProveedorDialog(false)}
+      >
         <DialogTitle>Editar Proveedor</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -502,7 +561,7 @@ function Users() {
           <TextField
             label="Nombre del Proveedor"
             name="nombre"
-            value={editProveedor?.nombre || ''}
+            value={editProveedor?.nombre || ""}
             onChange={handleEditProveedorInputChange}
             fullWidth
             margin="normal"
@@ -510,7 +569,7 @@ function Users() {
           <TextField
             label="Contacto"
             name="contacto"
-            value={editProveedor?.contacto || ''}
+            value={editProveedor?.contacto || ""}
             onChange={handleEditProveedorInputChange}
             fullWidth
             margin="normal"
@@ -518,14 +577,17 @@ function Users() {
           <TextField
             label="Teléfono"
             name="telefono"
-            value={editProveedor?.telefono || ''}
+            value={editProveedor?.telefono || ""}
             onChange={handleEditProveedorInputChange}
             fullWidth
             margin="normal"
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenEditProveedorDialog(false)} color="primary">
+          <Button
+            onClick={() => setOpenEditProveedorDialog(false)}
+            color="primary"
+          >
             Cancelar
           </Button>
           <Button onClick={handleUpdateProveedor} color="primary">
@@ -535,7 +597,10 @@ function Users() {
       </Dialog>
 
       {/* Modal para confirmar eliminación de proveedor */}
-      <Dialog open={openDeleteProveedorDialog} onClose={() => setOpenDeleteProveedorDialog(false)}>
+      <Dialog
+        open={openDeleteProveedorDialog}
+        onClose={() => setOpenDeleteProveedorDialog(false)}
+      >
         <DialogTitle>Eliminar Proveedor</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -543,7 +608,10 @@ function Users() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDeleteProveedorDialog(false)} color="primary">
+          <Button
+            onClick={() => setOpenDeleteProveedorDialog(false)}
+            color="primary"
+          >
             Cancelar
           </Button>
           <Button onClick={handleDeleteProveedor} color="primary">
@@ -553,8 +621,16 @@ function Users() {
       </Dialog>
 
       {/* Snackbar para mostrar mensajes */}
-      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbarSeverity}
+          sx={{ width: "100%" }}
+        >
           {snackbarMessage}
         </Alert>
       </Snackbar>
